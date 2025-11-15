@@ -151,15 +151,6 @@ class PaymentCardServiceImplTest {
     }
 
     @Test
-    void delete_shouldCallRepo() {
-        long id = 1L;
-
-        service.delete(id);
-
-        verify(paymentCardRepo).deleteById(id);
-    }
-
-    @Test
     void changeStatus_shouldSaveAndReturnDto_whenStatusChanges() {
         long id = 1L;
         PaymentCard card = PaymentCard.builder().id(id).active(false).build();

@@ -60,7 +60,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
             @CachePut(key = "#id", value = "card")
     },
             evict = {
-                    @CacheEvict(value = "cards", key = "@paymentCardDataAccessServiceImpl.findById(#id).user.id")
+                    @CacheEvict(value = "cards", key = "#paymentCardUpdateDto.id")
             })
     public PaymentCardResponseDto update(long id, PaymentCardUpdateDto paymentCardUpdateDto) {
         PaymentCard existingCard = getValidatedCardForUpdate(id, paymentCardUpdateDto);
@@ -76,10 +76,12 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     @Caching(evict = {
             @CacheEvict(value = "card", key = "#id", beforeInvocation = true),
             @CacheEvict(value = "cards",
-                    key = "@findById(#id).user.id",
+                    key = "@paymentCardServiceImpl.findById(#id).user.id",
                     beforeInvocation = true)
     })
     public void delete(long id) {
+        findById(id);
+
         paymentCardRepo.deleteById(id);
     }
 
@@ -89,7 +91,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
             @CachePut(value = "card", key = "#id")
     },
             evict = {
-                    @CacheEvict(value = "cards", key = "@findById(#id).user.id")
+                    @CacheEvict(value = "cards", key = "@paymentCardServiceImpl.findById(#id).user.id")
             })
     public PaymentCardResponseDto changeStatus(long id, boolean active) {
         PaymentCard card = getValidatedCardForChangingStatus(id, active);
@@ -99,7 +101,6 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
-    @Cacheable(value = "card", key = "#id")
     public PaymentCard findById(long id) {
         return paymentCardRepo.findById(id).
                 orElseThrow(() -> new PaymentCardNotFoundException("id", String.valueOf(id)));
@@ -183,7 +184,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
         return card;
     }
 
-    private PaymentCard getValidatedCardForUpdate(long id, PaymentCardUpdateDto dto) {
+    public PaymentCard getValidatedCardForUpdate(long id, PaymentCardUpdateDto dto) {
         validationUtil.validateMatchingIds(id, dto.getId());
 
         PaymentCard existingCard = findById(id);
