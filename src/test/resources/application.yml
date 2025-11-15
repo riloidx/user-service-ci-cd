@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  liquibase:
+    enabled: false
+
+logging:
+  level:
+    org.springframework.test: INFO
+    org.testcontainers: INFO
+    org.hibernate.SQL: DEBUG
