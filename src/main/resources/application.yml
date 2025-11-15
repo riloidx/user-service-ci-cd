@@ -1,0 +1,17 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: innowise-user-service
+
+user:
+  card:
+    max-limit: 5
+
+cache:
+  ttl:
+    user: 10m
+    card: 10m
+    cards: 5m
