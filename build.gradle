@@ -17,8 +17,8 @@ java {
 
 sonarqube {
     properties {
-        property "sonar.host.url", System.getenv("SONAR_HOST_URL") 
-        property "sonar.login", System.getenv("SONAR_TOKEN")
+        property "sonar.host.url", System.getenv("SONAR_HOST_URL")
+        property "sonar.token", System.getenv("SONAR_TOKEN")
         property "sonar.projectKey", System.getenv("SONAR_PROJECT_KEY")
         property "sonar.organization", System.getenv("SONAR_ORGANIZATION")
 
@@ -63,4 +63,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Conditional SonarQube execution - skip if no token provided
+tasks.named('sonarqube') {
+    onlyIf {
+        def token = System.getenv("SONAR_TOKEN")
+        return token != null && !token.isEmpty()
+    }
 }
