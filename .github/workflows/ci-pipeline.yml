@@ -47,8 +47,11 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build, Test and Analyze with SonarQube
-        run: ./gradlew clean build sonarqube
+      - name: Build and Test
+        run: ./gradlew clean build
+
+      - name: Run SonarQube Analysis
+        run: ./gradlew sonarqube
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
@@ -77,6 +80,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5
