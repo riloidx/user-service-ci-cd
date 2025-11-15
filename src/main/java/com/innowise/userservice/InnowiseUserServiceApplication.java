@@ -13,7 +13,6 @@ import org.springframework.cache.annotation.EnableCaching;
 public class InnowiseUserServiceApplication {
 
     public static void main(String[] args) {
-        System.out.println("github ci cd");
         SpringApplication.run(InnowiseUserServiceApplication.class, args);
     }
 

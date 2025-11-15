@@ -64,11 +64,3 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-// Conditional SonarQube execution - skip if no token provided
-tasks.named('sonarqube') {
-    onlyIf {
-        def token = System.getenv("SONAR_TOKEN")
-        return token != null && !token.isEmpty()
-    }
-}
