@@ -6,6 +6,16 @@ spring:
   liquibase:
     enabled: false
 
+cache:
+  ttl:
+    user: 10m
+    card: 10m
+    cards: 5m
+
+user:
+  card:
+    max-limit: 5
+
 logging:
   level:
     org.springframework.test: INFO
